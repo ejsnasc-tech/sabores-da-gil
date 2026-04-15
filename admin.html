@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sabores da Gil | Painel Administrativo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --dourado: #B5A642;
+      --dourado-escuro: #8F8133;
+      --marrom: #3E1F00;
+      --marrom-claro: #6B3A00;
+      --creme: #FEFAE0;
+      --creme-escuro: #F5EDD8;
+      --branco: #FFFFFF;
+      --perigo: #E63946;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      color: var(--marrom);
+      background: var(--creme-escuro);
+    }
+    .container {
+      width: min(1200px, 93%);
+      margin-inline: auto;
+    }
+
+    header {
+      background: var(--marrom);
+      color: var(--creme);
+      padding: 12px 0;
+      box-shadow: 0 8px 16px rgba(0,0,0,.16);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand img {
+      width: 46px;
+      height: 46px;
+      border-radius: 10px;
+      background: #fff2;
+      padding: 3px;
+    }
+    .brand h1 {
+      margin: 0;
+      font-size: clamp(1.1rem, 3.2vw, 1.5rem);
+      font-weight: 700;
+    }
+    .header-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .header-btn {
+      border: 0;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      color: #fff;
+      background: #694327;
+      display: inline-block;
+    }
+    .header-btn:hover { opacity: .92; }
+    .header-btn.restaurar { background: #ce4e59; }
+
+    main { padding: 24px 0 34px; }
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+    .card {
+      background: var(--branco);
+      border-radius: 14px;
+      border: 1px solid #efe4c6;
+      padding: 18px;
+      box-shadow: 0 8px 18px rgba(62,31,0,.08);
+    }
+    h2 {
+      margin: 0 0 14px;
+      font-family: 'Playfair Display', serif;
+      color: var(--marrom);
+    }
+    .muted {
+      color: var(--marrom-claro);
+      font-size: .95rem;
+    }
+    form {
+      display: grid;
+      gap: 12px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: .92rem;
+      font-weight: 600;
+      color: var(--marrom-claro);
+    }
+    input, textarea, select {
+      width: 100%;
+      border: 1px solid #dacba6;
+      border-radius: 10px;
+      padding: 10px 11px;
+      font: inherit;
+      color: var(--marrom);
+      background: #fffdf7;
+    }
+    textarea { min-height: 96px; resize: vertical; }
+    .btn-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn.salvar { background: var(--dourado); color: var(--marrom); }
+    .btn.salvar:hover { background: var(--dourado-escuro); color: #fff; }
+    .btn.cancelar { background: #999; color: #fff; display: none; }
+    .msg-sucesso {
+      margin-top: 8px;
+      background: #e8f7eb;
+      color: #0d6d30;
+      border: 1px solid #b7e6c4;
+      border-radius: 10px;
+      padding: 9px 10px;
+      font-size: .9rem;
+      display: none;
+    }
+
+    .lista {
+      display: grid;
+      gap: 10px;
+    }
+    .item {
+      border: 1px solid #ede2c6;
+      border-radius: 12px;
+      padding: 12px;
+      background: #fffdf8;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    .item-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: flex-start;
+    }
+    .item-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+      color: var(--marrom);
+      font-size: 1.02rem;
+    }
+    .item-price {
+      font-weight: 700;
+      color: var(--marrom-claro);
+      white-space: nowrap;
+      font-size: .95rem;
+    }
+    .badge {
+      display: inline-block;
+      font-size: .73rem;
+      border-radius: 999px;
+      padding: 3px 8px;
+      border: 1px solid #d8ca9f;
+      color: var(--marrom-claro);
+      margin-left: 2px;
+      background: #fff8e8;
+    }
+    .desc {
+      margin: 0;
+      color: #6c4d2b;
+      font-size: .9rem;
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .item-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .item-btn {
+      border: 0;
+      border-radius: 8px;
+      padding: 8px 10px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: .85rem;
+    }
+    .item-btn.editar { background: var(--dourado); color: var(--marrom); }
+    .item-btn.remover { background: var(--perigo); color: #fff; }
+    .empty {
+      border: 1px dashed #ccb98d;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      color: var(--marrom-claro);
+      background: #fffef7;
+    }
+
+    @media (min-width: 980px) {
+      .layout {
+        grid-template-columns: 0.9fr 1.35fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container header-inner">
+      <div class="brand">
+        <img src="logo.svg" alt="Logo Sabores da Gil" />
+        <h1>Painel Administrativo</h1>
+      </div>
+      <div class="header-actions">
+        <a class="header-btn" href="index.html">← Ver Site</a>
+        <button class="header-btn restaurar" type="button" onclick="restaurarPadrao()">🔄 Restaurar Padrão</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container layout">
+      <section class="card">
+        <h2 id="titulo-form">➕ Adicionar Marmita</h2>
+        <form id="form-marmita">
+          <div>
+            <label for="emoji">Emoji</label>
+            <input id="emoji" type="text" placeholder="🍗" maxlength="6" />
+          </div>
+          <div>
+            <label for="nome">Nome</label>
+            <input id="nome" type="text" required />
+          </div>
+          <div>
+            <label for="descricao">Descrição</label>
+            <textarea id="descricao" required></textarea>
+          </div>
+          <div>
+            <label for="preco">Preço</label>
+            <input id="preco" type="number" step="0.01" min="0" placeholder="0.00" required />
+          </div>
+          <div>
+            <label for="categoria">Categoria</label>
+            <select id="categoria" required>
+              <option value="tradicional">🍖 Tradicional</option>
+              <option value="fit">🥗 Fitness</option>
+              <option value="especial">⭐ Especial</option>
+            </select>
+          </div>
+          <div>
+            <label for="badge">Badge</label>
+            <input id="badge" type="text" placeholder="Popular, Novo, Fit..." />
+          </div>
+          <div class="btn-row">
+            <button class="btn salvar" type="submit">💾 Salvar Marmita</button>
+            <button class="btn cancelar" id="btn-cancelar" type="button" onclick="limparFormulario()">✖ Cancelar</button>
+          </div>
+          <div class="msg-sucesso" id="msg-sucesso">Marmita salva com sucesso! ✅</div>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>Marmitas Cadastradas (<span id="contador-itens">0</span>)</h2>
+        <p class="muted">Edite, remova ou atualize os pratos conforme a necessidade.</p>
+        <div id="lista-marmitas" class="lista"></div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const STORAGE_KEY = "saboresGilCardapio";
+    let editandoId = null;
+
+    const itensPadrao = [
+      { id: 1, nome: "Frango Grelhado", descricao: "Frango grelhado temperado na hora com arroz, feijão, macarrão e salada fresca.", preco: "0.00", categoria: "tradicional", emoji: "🍗", badge: "Popular" },
+      { id: 2, nome: "Carne Assada", descricao: "Carne assada no ponto certo com arroz, feijão, macarrão e acompanhamentos.", preco: "0.00", categoria: "tradicional", emoji: "🥩", badge: "Popular" },
+      { id: 3, nome: "Marmita Fitness", descricao: "Proteína grelhada, arroz integral, legumes no vapor e salada. Leve e nutritiva!", preco: "0.00", categoria: "fit", emoji: "🥗", badge: "Fit" },
+      { id: 4, nome: "Marmita Especial da Gil", descricao: "A queridinha da casa! Combinação especial com ingredientes selecionados e tempero secreto.", preco: "0.00", categoria: "especial", emoji: "⭐", badge: "Especial" }
+    ];
+
+    function textoSeguro(valor = "") {
+      return String(valor)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
+    function carregarItens() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); }
+      catch { return []; }
+    }
+
+    function salvarItens(itens) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(itens));
+    }
+
+    function formatarPreco(valor) {
+      const numero = Number.parseFloat(valor);
+      return Number.isFinite(numero) ? numero.toFixed(2).replace(".", ",") : "0,00";
+    }
+
+    function renderizarLista() {
+      const itens = carregarItens();
+      const lista = document.getElementById("lista-marmitas");
+      document.getElementById("contador-itens").textContent = itens.length;
+
+      if (itens.length === 0) {
+        lista.innerHTML = '<div class="empty">Nenhuma marmita cadastrada ainda. Adicione a primeira acima! 🍱</div>';
+        return;
+      }
+
+      lista.innerHTML = itens.map((item) => `
+        <article class="item">
+          <div class="item-top">
+            <div>
+              <h3 class="item-title">${textoSeguro(item.emoji || "🍱")} ${textoSeguro(item.nome || "")}</h3>
+              <span class="badge">${textoSeguro(item.categoria || "")}</span>
+              ${item.badge ? `<span class="badge">${textoSeguro(item.badge)}</span>` : ""}
+            </div>
+            <div class="item-price">R$ ${formatarPreco(item.preco)}</div>
+          </div>
+          <p class="desc">${textoSeguro(item.descricao || "")}</p>
+          <div class="item-actions">
+            <button class="item-btn editar" type="button" onclick="editarItem(${Number(item.id)})">✏️ Editar</button>
+            <button class="item-btn remover" type="button" onclick="removerItem(${Number(item.id)})">🗑️ Remover</button>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function editarItem(id) {
+      const item = carregarItens().find((i) => i.id === id);
+      if (!item) return;
+
+      editandoId = id;
+      document.getElementById("emoji").value = item.emoji || "";
+      document.getElementById("nome").value = item.nome || "";
+      document.getElementById("descricao").value = item.descricao || "";
+      document.getElementById("preco").value = item.preco || "0.00";
+      document.getElementById("categoria").value = item.categoria || "tradicional";
+      document.getElementById("badge").value = item.badge || "";
+      document.getElementById("titulo-form").textContent = "✏️ Editar Marmita";
+      document.getElementById("btn-cancelar").style.display = "inline-block";
+      document.getElementById("msg-sucesso").style.display = "none";
+      document.getElementById("form-marmita").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function removerItem(id) {
+      if (!confirm("Deseja remover esta marmita?")) return;
+      const itens = carregarItens().filter((i) => i.id !== id);
+      salvarItens(itens);
+      renderizarLista();
+      if (editandoId === id) limparFormulario();
+    }
+
+    function restaurarPadrao() {
+      if (!confirm("Isso irá substituir todas as marmitas pelos itens padrão. Deseja continuar?")) return;
+      salvarItens(itensPadrao);
+      renderizarLista();
+      limparFormulario();
+      mostrarMensagem("Cardápio padrão restaurado com sucesso! ✅");
+    }
+
+    function limparFormulario() {
+      editandoId = null;
+      document.getElementById("form-marmita").reset();
+      document.getElementById("categoria").value = "tradicional";
+      document.getElementById("titulo-form").textContent = "➕ Adicionar Marmita";
+      document.getElementById("btn-cancelar").style.display = "none";
+    }
+
+    function mostrarMensagem(texto) {
+      const msg = document.getElementById("msg-sucesso");
+      msg.textContent = texto;
+      msg.style.display = "block";
+      setTimeout(() => { msg.style.display = "none"; }, 3000);
+    }
+
+    document.getElementById("form-marmita").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const itens = carregarItens();
+      const novoItem = {
+        id: editandoId || Date.now(),
+        emoji: document.getElementById("emoji").value || "🍱",
+        nome: document.getElementById("nome").value.trim(),
+        descricao: document.getElementById("descricao").value.trim(),
+        preco: document.getElementById("preco").value || "0.00",
+        categoria: document.getElementById("categoria").value,
+        badge: document.getElementById("badge").value.trim()
+      };
+
+      if (editandoId) {
+        const idx = itens.findIndex((i) => i.id === editandoId);
+        if (idx !== -1) itens[idx] = novoItem;
+      } else {
+        itens.push(novoItem);
+      }
+
+      salvarItens(itens);
+      renderizarLista();
+      limparFormulario();
+      mostrarMensagem("Marmita salva com sucesso! ✅");
+    });
+
+    document.addEventListener("DOMContentLoaded", renderizarLista);
+  </script>
+</body>
+</html>

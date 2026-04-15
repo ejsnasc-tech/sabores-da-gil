@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" role="img" aria-labelledby="title desc">
+  <title id="title">Logo Sabores da Gil</title>
+  <desc id="desc">Logo orgânica dourada com coração, texto cursivo e ícone de marmita.</desc>
+  <defs>
+    <style>
+      .blob { fill: #B5A642; }
+      .detalhe { fill: #3E1F00; }
+      .texto { fill: #3E1F00; font-family: 'Dancing Script', cursive; text-anchor: middle; }
+    </style>
+  </defs>
+
+  <path class="blob" d="M154 18c37-5 74 11 96 40 24 30 31 73 16 109-14 36-49 61-87 72-38 11-81 7-112-18-31-25-47-71-41-111C32 70 63 35 101 24c18-5 36-3 53-6z"/>
+
+  <path class="detalhe" d="M70 55c6-10 20-12 29-4 4 3 7 7 8 12 1-5 4-9 8-12 10-8 24-6 30 5 7 12 1 24-12 35-8 7-17 13-26 19-9-6-18-12-26-19C68 80 63 67 70 55z"/>
+
+  <text class="texto" x="152" y="138" font-size="44" font-weight="700">Sabores</text>
+  <text class="texto" x="152" y="176" font-size="38" font-weight="600">da Gil</text>
+
+  <g class="detalhe" transform="translate(150 225)">
+    <ellipse cx="0" cy="10" rx="52" ry="20" fill="#FEFAE0" stroke="#3E1F00" stroke-width="6"/>
+    <rect x="-42" y="-18" width="84" height="26" rx="10" ry="10" fill="none" stroke="#3E1F00" stroke-width="6"/>
+    <circle cx="-23" cy="-5" r="4"/>
+    <circle cx="0" cy="-5" r="4"/>
+    <circle cx="23" cy="-5" r="4"/>
+  </g>
+</svg>

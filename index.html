@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sabores da Gil | Cardápio Online</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --dourado: #B5A642;
+      --dourado-escuro: #8F8133;
+      --marrom: #3E1F00;
+      --marrom-claro: #6B3A00;
+      --creme: #FEFAE0;
+      --creme-escuro: #F5EDD8;
+      --branco: #FFFFFF;
+      --texto: #3E1F00;
+      --texto-claro: #6B3A00;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      color: var(--texto);
+      background: var(--branco);
+    }
+    a { color: inherit; text-decoration: none; }
+    .container {
+      width: min(1100px, 92%);
+      margin-inline: auto;
+    }
+
+    .header {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 1000;
+      background: var(--branco);
+      box-shadow: 0 4px 18px rgba(62, 31, 0, .12);
+    }
+    .header-inner {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .brand img { height: 55px; width: auto; }
+    .brand h1 {
+      margin: 0;
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(1.6rem, 2.8vw, 2rem);
+      color: var(--marrom);
+      line-height: 1;
+      white-space: nowrap;
+    }
+    .nav {
+      display: flex;
+      gap: 18px;
+      font-weight: 500;
+      color: var(--marrom);
+      font-size: .96rem;
+    }
+    .nav a:hover { color: var(--dourado-escuro); }
+
+    .hero {
+      padding: 126px 0 62px;
+      background: linear-gradient(155deg, #f3e9bf 0%, #fefae0 47%, #fffdf3 100%);
+      text-align: center;
+    }
+    .hero-logo {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 16px;
+      display: block;
+    }
+    .hero h2 {
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.9rem, 4.8vw, 3rem);
+      color: var(--marrom);
+    }
+    .hero p {
+      margin: 14px auto 0;
+      max-width: 650px;
+      color: var(--marrom-claro);
+      font-size: clamp(.96rem, 2.8vw, 1.08rem);
+    }
+    .hero-actions {
+      margin-top: 26px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .btn {
+      border: 2px solid transparent;
+      border-radius: 999px;
+      font-weight: 600;
+      padding: 11px 22px;
+      cursor: pointer;
+      transition: .25s ease;
+      display: inline-block;
+    }
+    .btn-primary {
+      background: var(--dourado);
+      color: var(--marrom);
+      border-color: var(--dourado);
+    }
+    .btn-primary:hover { background: var(--dourado-escuro); color: var(--creme); border-color: var(--dourado-escuro); }
+    .btn-outline {
+      border-color: var(--marrom);
+      color: var(--marrom);
+      background: transparent;
+    }
+    .btn-outline:hover { background: var(--marrom); color: var(--creme); }
+
+    .destaques {
+      background: var(--marrom);
+      color: var(--creme);
+      padding: 14px 0;
+    }
+    .destaques-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      font-size: .93rem;
+      font-weight: 500;
+    }
+    .destaque-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: center;
+    }
+    .destaque-item i { color: var(--dourado); }
+
+    section { padding: 68px 0; }
+    .sec-title {
+      margin: 0 0 10px;
+      font-family: 'Playfair Display', serif;
+      color: var(--marrom);
+      text-align: center;
+      font-size: clamp(1.65rem, 4vw, 2.25rem);
+    }
+    .sec-subtitle {
+      margin: 0 auto 26px;
+      text-align: center;
+      max-width: 700px;
+      color: var(--texto-claro);
+    }
+
+    #cardapio { background: var(--creme-escuro); }
+    .filtros {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 26px;
+    }
+    .filtro-btn {
+      border: 1px solid #bca97d;
+      background: var(--branco);
+      color: var(--marrom);
+      border-radius: 999px;
+      padding: 9px 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .filtro-btn.ativo,
+    .filtro-btn:hover {
+      background: var(--dourado);
+      border-color: var(--dourado);
+    }
+    .grid-cardapio {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
+    }
+    .card-item {
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--branco);
+      box-shadow: 0 10px 20px rgba(62, 31, 0, .08);
+      border: 1px solid #eee6d0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+    .card-img {
+      background: linear-gradient(135deg, #fffdf1, #f4e6b9);
+      min-height: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2.2rem;
+      position: relative;
+      padding: 12px;
+    }
+    .card-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: .74rem;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: var(--dourado);
+      color: var(--marrom);
+    }
+    .card-badge.fit {
+      background: #89c36a;
+      color: #21440f;
+    }
+    .card-body {
+      padding: 16px 16px 10px;
+      flex: 1;
+    }
+    .card-body h3 {
+      margin: 0;
+      color: var(--marrom);
+      font-size: 1.15rem;
+    }
+    .card-body p {
+      margin: 9px 0 0;
+      color: var(--texto-claro);
+      font-size: .92rem;
+      line-height: 1.5;
+    }
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #f0ebe0;
+      padding: 12px 16px 16px;
+      gap: 8px;
+    }
+    .preco {
+      color: var(--marrom);
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    .preco span {
+      font-size: .8rem;
+      font-weight: 500;
+      color: var(--texto-claro);
+    }
+    .tag-categoria {
+      font-size: .75rem;
+      border: 1px solid #d8caa5;
+      border-radius: 999px;
+      padding: 4px 8px;
+      color: var(--marrom-claro);
+      background: #fff9e9;
+      white-space: nowrap;
+    }
+
+    #sobre { background: var(--branco); }
+    .sobre-wrap {
+      display: grid;
+      gap: 20px;
+      align-items: center;
+      grid-template-columns: 1fr;
+    }
+    .sobre-blob {
+      background: radial-gradient(circle at 30% 20%, #cabd65 0%, var(--dourado) 62%, #a19340 100%);
+      color: var(--marrom);
+      min-height: 220px;
+      border-radius: 59% 41% 59% 41% / 47% 57% 43% 53%;
+      display: grid;
+      place-items: center;
+      font-size: 3rem;
+      box-shadow: inset 0 0 0 6px rgba(255,255,255,.18);
+    }
+    .sobre-txt p { margin-top: 0; color: var(--texto-claro); line-height: 1.7; }
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .stat {
+      border: 1px solid #e4d8b7;
+      border-radius: 12px;
+      padding: 10px 12px;
+      background: #fffdf5;
+      color: var(--marrom);
+      font-weight: 600;
+      font-size: .9rem;
+    }
+
+    #contato { background: var(--creme); }
+    .contato-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    .contato-card {
+      background: var(--branco);
+      border: 1px solid #ebdfbe;
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 6px 12px rgba(62,31,0,.06);
+    }
+    .contato-card i {
+      font-size: 1.3rem;
+      color: var(--dourado-escuro);
+      margin-bottom: 10px;
+    }
+    .contato-card h3 { margin: 4px 0; color: var(--marrom); }
+    .contato-card p { margin: 0; color: var(--texto-claro); word-break: break-word; }
+    .contato-card a { color: var(--marrom-claro); font-weight: 500; text-decoration: underline; text-underline-offset: 2px; }
+
+    footer {
+      background: var(--marrom);
+      color: var(--creme);
+      padding: 26px 0;
+      text-align: center;
+    }
+    .footer-brand {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.9rem;
+      margin: 0;
+    }
+    .footer-social {
+      margin: 10px 0 12px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+    }
+    .footer-social a { opacity: .9; }
+    .footer-social a:hover { opacity: 1; color: var(--dourado); }
+
+    .whatsapp-float {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: #25d366;
+      color: #fff;
+      font-size: 1.65rem;
+      box-shadow: 0 12px 24px rgba(37, 211, 102, .35);
+      z-index: 1200;
+      animation: pulse 1.9s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, .45); }
+      70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+    }
+
+    @media (min-width: 700px) {
+      .destaques-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .contato-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .sobre-wrap { grid-template-columns: minmax(240px, 320px) 1fr; }
+    }
+    @media (max-width: 760px) {
+      .header-inner { flex-wrap: wrap; justify-content: center; padding: 10px 0; }
+      .nav { width: 100%; justify-content: center; padding-bottom: 6px; }
+      .hero { padding-top: 152px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <a class="brand" href="#inicio" aria-label="Sabores da Gil">
+        <img src="logo.svg" alt="Logo Sabores da Gil" />
+        <h1>Sabores da Gil</h1>
+      </a>
+      <nav class="nav">
+        <a href="#cardapio">Cardápio</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#contato">Contato</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="inicio">
+    <section class="hero">
+      <div class="container">
+        <img src="logo.svg" alt="Logo Sabores da Gil" class="hero-logo" />
+        <h2>Sabor que alimenta a alma</h2>
+        <p>Comida caseira feita com carinho em Glória-SE. Marmitas fresquinhas para deixar seu dia mais leve e saboroso.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#cardapio">Ver Cardápio</a>
+          <a class="btn btn-outline" href="#contato">Entre em Contato</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="destaques">
+      <div class="container destaques-grid">
+        <div class="destaque-item"><i class="fa-solid fa-seedling"></i> Ingredientes Frescos 🌿</div>
+        <div class="destaque-item"><i class="fa-solid fa-heart"></i> Feito com Amor ❤️</div>
+        <div class="destaque-item"><i class="fa-solid fa-truck-fast"></i> Entrega em Glória-SE 🚚</div>
+        <div class="destaque-item"><i class="fa-solid fa-sack-dollar"></i> Preço Justo 💰</div>
+      </div>
+    </div>
+
+    <section id="cardapio">
+      <div class="container">
+        <h2 class="sec-title">Nosso Cardápio</h2>
+        <p class="sec-subtitle">Escolha sua marmita favorita e fale com a gente no WhatsApp para pedir.</p>
+        <div class="filtros">
+          <button class="filtro-btn ativo" onclick="filtrar('todos', this)">Todos</button>
+          <button class="filtro-btn" onclick="filtrar('tradicional', this)">Tradicional</button>
+          <button class="filtro-btn" onclick="filtrar('fit', this)">Fitness</button>
+          <button class="filtro-btn" onclick="filtrar('especial', this)">Especial</button>
+        </div>
+        <div class="grid-cardapio" id="grid-cardapio"></div>
+      </div>
+    </section>
+
+    <section id="sobre">
+      <div class="container sobre-wrap">
+        <div class="sobre-blob" aria-hidden="true">🍱</div>
+        <div class="sobre-txt">
+          <h2 class="sec-title" style="text-align:left; margin-top:0;">Sobre a Sabores da Gil</h2>
+          <p>
+            A Sabores da Gil nasceu do amor por comida de verdade: aquela refeição caseira, temperada na medida certa e feita com cuidado.
+            Em Glória-SE, nosso compromisso é entregar sabor, qualidade e carinho em cada marmita.
+          </p>
+          <div class="stats">
+            <div class="stat">100% Caseiro</div>
+            <div class="stat">Ingredientes Frescos</div>
+            <div class="stat">Feito com Amor</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contato">
+      <div class="container">
+        <h2 class="sec-title">Fale com a Gente</h2>
+        <p class="sec-subtitle">Faça seu pedido e acompanhe novidades pelos nossos canais oficiais.</p>
+        <div class="contato-grid">
+          <article class="contato-card">
+            <i class="fa-brands fa-whatsapp"></i>
+            <h3>WhatsApp</h3>
+            <p><a target="_blank" rel="noopener noreferrer" href="https://wa.me/5579991051311">+55 79 9910-5131</a></p>
+          </article>
+          <article class="contato-card">
+            <i class="fa-brands fa-instagram"></i>
+            <h3>Instagram</h3>
+            <p><a target="_blank" rel="noopener noreferrer" href="https://instagram.com/_saboresdagil_">@_saboresdagil_</a></p>
+          </article>
+          <article class="contato-card">
+            <i class="fa-solid fa-location-dot"></i>
+            <h3>Localização</h3>
+            <p>Glória-SE</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p class="footer-brand">Sabores da Gil</p>
+      <div class="footer-social">
+        <a target="_blank" rel="noopener noreferrer" href="https://wa.me/5579991051311" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+        <a target="_blank" rel="noopener noreferrer" href="https://instagram.com/_saboresdagil_" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+      </div>
+      <small>© <span id="ano-atual"></span> Sabores da Gil — Glória-SE</small>
+      <div style="margin-top:10px;"><a href="admin.html" style="opacity:0.3; font-size:0.75rem;">⚙️ Admin</a></div>
+    </div>
+  </footer>
+
+  <a class="whatsapp-float" target="_blank" rel="noopener noreferrer" href="https://wa.me/5579991051311" aria-label="Chamar no WhatsApp">
+    <i class="fa-brands fa-whatsapp"></i>
+  </a>
+
+  <script>
+    const STORAGE_KEY = "saboresGilCardapio";
+
+    const itensPadrao = [
+      { id: 1, nome: "Frango Grelhado", descricao: "Frango grelhado temperado na hora com arroz, feijão, macarrão e salada fresca.", preco: "0.00", categoria: "tradicional", emoji: "🍗", badge: "Popular" },
+      { id: 2, nome: "Carne Assada", descricao: "Carne assada no ponto certo com arroz, feijão, macarrão e acompanhamentos.", preco: "0.00", categoria: "tradicional", emoji: "🥩", badge: "Popular" },
+      { id: 3, nome: "Marmita Fitness", descricao: "Proteína grelhada, arroz integral, legumes no vapor e salada. Leve e nutritiva!", preco: "0.00", categoria: "fit", emoji: "🥗", badge: "Fit" },
+      { id: 4, nome: "Marmita Especial da Gil", descricao: "A queridinha da casa! Combinação especial com ingredientes selecionados e tempero secreto.", preco: "0.00", categoria: "especial", emoji: "⭐", badge: "Especial" }
+    ];
+
+    function textoSeguro(valor = "") {
+      return String(valor)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
+    function carregarItens() {
+      try {
+        const dados = localStorage.getItem(STORAGE_KEY);
+        return dados ? JSON.parse(dados) : itensPadrao;
+      } catch {
+        return itensPadrao;
+      }
+    }
+
+    function renderizarCardapio(categoria = "todos") {
+      const itens = carregarItens();
+      const grid = document.getElementById("grid-cardapio");
+      const filtrados = categoria === "todos" ? itens : itens.filter((i) => i.categoria === categoria);
+
+      if (filtrados.length === 0) {
+        grid.innerHTML = '<p style="text-align:center; color:#6B3A00; grid-column:1/-1;">Nenhuma marmita disponível no momento. 🍱</p>';
+        return;
+      }
+
+      grid.innerHTML = filtrados.map((item) => {
+        const categoriaItem = textoSeguro(item.categoria || "tradicional");
+        const nomeSeguro = textoSeguro(item.nome || "");
+        const descricaoSegura = textoSeguro(item.descricao || "");
+        const emojiSeguro = textoSeguro(item.emoji || "🍱");
+        const badgeSeguro = textoSeguro(item.badge || "");
+        const precoNumero = Number.parseFloat(item.preco);
+        const precoFormatado = Number.isFinite(precoNumero) ? precoNumero.toFixed(2).replace(".", ",") : "0,00";
+        const categoriaLabel = categoriaItem.charAt(0).toUpperCase() + categoriaItem.slice(1);
+
+        return `
+          <div class="card-item">
+            <div class="card-img">${emojiSeguro}${badgeSeguro ? `<span class="card-badge ${categoriaItem === "fit" ? "fit" : ""}">${badgeSeguro}</span>` : ""}</div>
+            <div class="card-body">
+              <h3>${nomeSeguro}</h3>
+              <p>${descricaoSegura}</p>
+            </div>
+            <div class="card-footer">
+              <div class="preco">R$ ${precoFormatado} <span>/unid.</span></div>
+              <span class="tag-categoria">${categoriaLabel}</span>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function filtrar(categoria, btn) {
+      document.querySelectorAll(".filtro-btn").forEach((b) => b.classList.remove("ativo"));
+      btn.classList.add("ativo");
+      renderizarCardapio(categoria);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("ano-atual").textContent = new Date().getFullYear();
+      renderizarCardapio();
+    });
+  </script>
+</body>
+</html>
