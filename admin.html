@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sabores da Gil | Painel Administrativo</title>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+  <script src="firebase-config.js"></script>
   <style>
     :root {
       --dourado: #B5A642;
@@ -75,7 +78,6 @@
       display: inline-block;
     }
     .header-btn:hover { opacity: .92; }
-    .header-btn.restaurar { background: #ce4e59; }
 
     main { padding: 24px 0 34px; }
     .layout {
@@ -223,6 +225,189 @@
       color: var(--marrom-claro);
       background: #fffef7;
     }
+    .img-upload-area {
+      border: 2px dashed #dacba6;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      background: #fffdf7;
+      min-height: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+    }
+    .img-upload-area:hover {
+      border-color: var(--dourado);
+      background: #fff8e8;
+    }
+    .img-upload-area img {
+      max-width: 100%;
+      max-height: 180px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+    .img-upload-area .placeholder-txt {
+      color: var(--marrom-claro);
+      font-size: .85rem;
+    }
+    .img-upload-area .placeholder-txt i {
+      font-size: 1.6rem;
+      display: block;
+      margin-bottom: 4px;
+      color: var(--dourado-escuro);
+    }
+    .btn-remover-img {
+      border: none;
+      background: var(--perigo);
+      color: #fff;
+      border-radius: 8px;
+      padding: 5px 10px;
+      font-size: .78rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 4px;
+    }
+    .login-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(62, 31, 0, .85);
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .login-box {
+      background: var(--branco);
+      border-radius: 16px;
+      padding: 32px;
+      width: min(380px, 90%);
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,.3);
+    }
+    .login-box h2 {
+      font-family: 'Playfair Display', serif;
+      margin: 0 0 6px;
+    }
+    .login-box p {
+      margin: 0 0 18px;
+      color: var(--marrom-claro);
+      font-size: .9rem;
+    }
+    .login-box input {
+      width: 100%;
+      border: 1px solid #dacba6;
+      border-radius: 10px;
+      padding: 12px;
+      font: inherit;
+      text-align: center;
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+    }
+    .login-box button {
+      width: 100%;
+      border: 0;
+      border-radius: 10px;
+      padding: 12px;
+      background: var(--dourado);
+      color: var(--marrom);
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .login-box button:hover { background: var(--dourado-escuro); color: #fff; }
+    .login-erro {
+      color: var(--perigo);
+      font-size: .85rem;
+      margin-top: 8px;
+      display: none;
+    }
+    .loading-msg {
+      text-align: center;
+      padding: 20px;
+      color: var(--marrom-claro);
+    }
+    .item-img {
+      width: 70px;
+      height: 70px;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 1px solid #ede2c6;
+      flex-shrink: 0;
+    }
+    .item-top-with-img {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .emoji-wrapper { position: relative; }
+    .emoji-preview {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    #emoji {
+      flex: 1;
+    }
+    .emoji-selected {
+      font-size: 2rem;
+      min-width: 42px;
+      text-align: center;
+      line-height: 1;
+    }
+    .emoji-dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: var(--branco);
+      border: 1px solid #dacba6;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(62,31,0,.15);
+      max-height: 260px;
+      overflow-y: auto;
+      margin-top: 4px;
+    }
+    .emoji-dropdown.open { display: block; }
+    .emoji-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+      gap: 2px;
+      padding: 8px;
+    }
+    .emoji-option {
+      font-size: 1.5rem;
+      text-align: center;
+      padding: 6px 0;
+      border-radius: 8px;
+      cursor: pointer;
+      border: none;
+      background: none;
+      transition: background .15s;
+    }
+    .emoji-option:hover {
+      background: #f5edd8;
+    }
+    .emoji-cat-label {
+      font-size: .78rem;
+      font-weight: 700;
+      color: var(--marrom-claro);
+      padding: 8px 10px 2px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+    .emoji-no-result {
+      padding: 14px;
+      text-align: center;
+      color: var(--marrom-claro);
+      font-size: .9rem;
+    }
 
     @media (min-width: 980px) {
       .layout {
@@ -232,6 +417,16 @@
   </style>
 </head>
 <body>
+  <div class="login-overlay" id="login-overlay">
+    <div class="login-box">
+      <h2>🔐 Acesso Admin</h2>
+      <p>Digite a senha para acessar o painel.</p>
+      <input type="password" id="login-senha" placeholder="Senha" />
+      <button onclick="verificarSenha()">Entrar</button>
+      <p class="login-erro" id="login-erro">Senha incorreta. Tente novamente.</p>
+    </div>
+  </div>
+
   <header>
     <div class="container header-inner">
       <div class="brand">
@@ -240,7 +435,6 @@
       </div>
       <div class="header-actions">
         <a class="header-btn" href="index.html">← Ver Site</a>
-        <button class="header-btn restaurar" type="button" onclick="restaurarPadrao()">🔄 Restaurar Padrão</button>
       </div>
     </div>
   </header>
@@ -250,9 +444,13 @@
       <section class="card">
         <h2 id="titulo-form">➕ Adicionar Marmita</h2>
         <form id="form-marmita">
-          <div>
+          <div class="emoji-wrapper">
             <label for="emoji">Emoji</label>
-            <input id="emoji" type="text" placeholder="🍗" maxlength="6" />
+            <div class="emoji-preview">
+              <span class="emoji-selected" id="emoji-selected">🍗</span>
+              <input id="emoji" type="text" placeholder="Digite para buscar... ex: frango, salada" />
+            </div>
+            <div class="emoji-dropdown" id="emoji-dropdown"></div>
           </div>
           <div>
             <label for="nome">Nome</label>
@@ -269,14 +467,21 @@
           <div>
             <label for="categoria">Categoria</label>
             <select id="categoria" required>
-              <option value="tradicional">🍖 Tradicional</option>
-              <option value="fit">🥗 Fitness</option>
-              <option value="especial">⭐ Especial</option>
+              <option value="tradicional">Tradicional</option>
+              <option value="fit">Fitness</option>
+              <option value="especial">Especial</option>
             </select>
           </div>
           <div>
             <label for="badge">Badge</label>
             <input id="badge" type="text" placeholder="Popular, Novo, Fit..." />
+          </div>
+          <div>
+            <label>Imagem da Marmita</label>
+            <input id="imagem-file" type="file" accept="image/*" style="display:none" />
+            <div class="img-upload-area" id="img-upload-area" onclick="document.getElementById('imagem-file').click()">
+              <span class="placeholder-txt"><i>📷</i> Clique para enviar uma foto</span>
+            </div>
           </div>
           <div class="btn-row">
             <button class="btn salvar" type="submit">💾 Salvar Marmita</button>
@@ -295,8 +500,144 @@
   </main>
 
   <script>
-    const STORAGE_KEY = "saboresGilCardapio";
+    // ===== FIREBASE INIT =====
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const cardapioRef = db.ref("cardapio");
+    const senhaRef = db.ref("admin_senha");
+
     let editandoId = null;
+    let emojiSelecionado = "🍗";
+    let imagemBase64 = "";
+    let itensCache = [];
+
+    // ===== LOGIN =====
+    document.getElementById("login-senha").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") verificarSenha();
+    });
+
+    function verificarSenha() {
+      const input = document.getElementById("login-senha").value;
+      senhaRef.once("value").then((snap) => {
+        const senhaSalva = snap.val();
+        if (!senhaSalva) {
+          // Primeira vez: define a senha digitada como a senha admin
+          senhaRef.set(input).then(() => {
+            document.getElementById("login-overlay").style.display = "none";
+          });
+        } else if (input === senhaSalva) {
+          document.getElementById("login-overlay").style.display = "none";
+        } else {
+          document.getElementById("login-erro").style.display = "block";
+        }
+      }).catch(() => {
+        // Se falhar (regras), tenta senha local
+        const senhaLocal = localStorage.getItem("admin_senha_local") || "admin123";
+        if (input === senhaLocal) {
+          document.getElementById("login-overlay").style.display = "none";
+        } else {
+          document.getElementById("login-erro").style.display = "block";
+        }
+      });
+    }
+
+    const EMOJIS = {
+      "Comidas": [
+        ["🍗","frango,chicken,coxa"],["🍖","carne,meat,costela"],["🥩","bife,steak,carne"],["🍔","hamburguer,burger"],
+        ["🌭","hotdog,cachorro quente"],["🍕","pizza"],["🌮","taco"],["🌯","burrito,wrap"],
+        ["🥘","panela,ensopado,cozido"],["🍲","sopa,caldo"],["🍛","curry,caril"],["🍜","ramen,noodle,macarrao"],
+        ["🍝","espaguete,massa,macarrao,pasta"],["🍣","sushi,japones"],["🍤","camarao,shrimp"],["🍚","arroz,rice"],
+        ["🍱","marmita,bento"],["🥗","salada,salad,fit,fitness"],["🥙","pita,wrap"],["🧆","falafel,bolinho"],
+        ["🥚","ovo,egg"],["🍳","frigideira,ovo frito"],["🥞","panqueca,pancake"],["🧇","waffle"],
+        ["🥓","bacon"],["🧀","queijo,cheese"],["🥪","sanduiche,sandwich"],["🫔","tamale"],
+        ["🥣","cereal,mingau"],["🫕","fondue"],["🥫","lata,enlatado"],["🧈","manteiga"]
+      ],
+      "Frutas e Vegetais": [
+        ["🍎","maca,apple"],["🍐","pera"],["🍊","laranja,orange,tangerina"],["🍋","limao,lemon"],
+        ["🍌","banana"],["🍉","melancia,watermelon"],["🍇","uva,grape"],["🍓","morango,strawberry"],
+        ["🫐","blueberry,mirtilo"],["🍑","pessego,peach"],["🥭","manga,mango"],["🍍","abacaxi,pineapple"],
+        ["🥥","coco,coconut"],["🥝","kiwi"],["🍅","tomate,tomato"],["🥑","abacate,avocado"],
+        ["🥦","brocolis,broccoli"],["🥬","alface,folha"],["🥒","pepino,cucumber"],["🌽","milho,corn"],
+        ["🥕","cenoura,carrot"],["🧅","cebola,onion"],["🧄","alho,garlic"],["🫑","pimentao"],
+        ["🌶️","pimenta,pepper"],["🥔","batata,potato"],["🍠","batata doce"],["🫘","feijao,bean"]
+      ],
+      "Bebidas": [
+        ["☕","cafe,coffee"],["🍵","cha,tea"],["🧃","suco,juice,caixinha"],["🥤","refrigerante,copo,soda"],
+        ["🧋","bubble tea"],["🥛","leite,milk"],["🍺","cerveja,beer"],["🍷","vinho,wine"],
+        ["🍹","drink,coquetel,cocktail"],["🧊","gelo,ice"],["💧","agua,water"],["🫗","servindo"]
+      ],
+      "Doces e Sobremesas": [
+        ["🍰","bolo,torta,cake"],["🎂","aniversario,bolo"],["🧁","cupcake"],["🍮","pudim,flan"],
+        ["🍩","donut,rosquinha"],["🍪","biscoito,cookie"],["🍫","chocolate"],["🍬","bala,doce,candy"],
+        ["🍭","pirulito,lollipop"],["🍦","sorvete,icecream"],["🍨","sundae"],["🥧","torta,pie"],
+        ["🫙","pote,conserva"]
+      ],
+      "Especiais": [
+        ["⭐","estrela,star,especial"],["🔥","fogo,fire,quente,popular"],["❤️","coracao,heart,amor"],
+        ["💛","amarelo,coracao"],["🏆","trofeu,trophy,melhor"],["👨‍🍳","chef,cozinheiro"],["👩‍🍳","chef,cozinheira"],
+        ["🍱","marmita,bento"],["🛵","entrega,delivery,moto"],["🚚","caminhao,entrega,truck"],
+        ["✨","brilho,novo,new"],["💪","forte,fitness,fit"],["🌿","natural,verde,leaf"],["🌱","saudavel,organico"],
+        ["💰","preco,money,dinheiro"],["🎉","festa,party,novo"],["👑","coroa,crown,premium"],["💎","diamante,premium"]
+      ]
+    };
+
+    function initEmojiPicker() {
+      const input = document.getElementById("emoji");
+      const dropdown = document.getElementById("emoji-dropdown");
+      const selectedEl = document.getElementById("emoji-selected");
+
+      function renderEmojis(filtro = "") {
+        const termo = filtro.toLowerCase().trim();
+        let html = "";
+        let total = 0;
+
+        for (const [cat, lista] of Object.entries(EMOJIS)) {
+          const filtrados = lista.filter(([em, tags]) =>
+            !termo || em.includes(termo) || tags.toLowerCase().includes(termo)
+          );
+          if (filtrados.length === 0) continue;
+          total += filtrados.length;
+          html += `<div class="emoji-cat-label">${cat}</div><div class="emoji-grid">`;
+          for (const [em] of filtrados) {
+            html += `<button type="button" class="emoji-option" data-emoji="${em}" title="${em}">${em}</button>`;
+          }
+          html += `</div>`;
+        }
+
+        if (total === 0) {
+          html = `<div class="emoji-no-result">Nenhum emoji encontrado 😕</div>`;
+        }
+        dropdown.innerHTML = html;
+      }
+
+      input.addEventListener("focus", () => {
+        renderEmojis(input.value);
+        dropdown.classList.add("open");
+      });
+
+      input.addEventListener("input", () => {
+        renderEmojis(input.value);
+        dropdown.classList.add("open");
+      });
+
+      dropdown.addEventListener("click", (e) => {
+        const btn = e.target.closest(".emoji-option");
+        if (!btn) return;
+        const emoji = btn.dataset.emoji;
+        emojiSelecionado = emoji;
+        selectedEl.textContent = emoji;
+        input.value = "";
+        dropdown.classList.remove("open");
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!e.target.closest(".emoji-wrapper")) {
+          dropdown.classList.remove("open");
+        }
+      });
+
+      renderEmojis();
+    }
 
     const itensPadrao = [
       { id: 1, nome: "Frango Grelhado", descricao: "Frango grelhado temperado na hora com arroz, feijão, macarrão e salada fresca.", preco: "0.00", categoria: "tradicional", emoji: "🍗", badge: "Popular" },
@@ -315,12 +656,11 @@
     }
 
     function carregarItens() {
-      try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); }
-      catch { return []; }
+      return itensCache;
     }
 
     function salvarItens(itens) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(itens));
+      cardapioRef.set(itens);
     }
 
     function formatarPreco(valor) {
@@ -340,15 +680,20 @@
 
       lista.innerHTML = itens.map((item) => `
         <article class="item">
-          <div class="item-top">
-            <div>
-              <h3 class="item-title">${textoSeguro(item.emoji || "🍱")} ${textoSeguro(item.nome || "")}</h3>
-              <span class="badge">${textoSeguro(item.categoria || "")}</span>
-              ${item.badge ? `<span class="badge">${textoSeguro(item.badge)}</span>` : ""}
+          <div class="item-top-with-img">
+            ${item.imagem ? `<img class="item-img" src="${textoSeguro(item.imagem)}" alt="${textoSeguro(item.nome)}" onerror="this.style.display='none'" />` : ""}
+            <div style="flex:1; min-width:0;">
+              <div class="item-top">
+                <div>
+                  <h3 class="item-title">${textoSeguro(item.emoji || "🍱")} ${textoSeguro(item.nome || "")}</h3>
+                  <span class="badge">${textoSeguro(item.categoria || "")}</span>
+                  ${item.badge ? `<span class="badge">${textoSeguro(item.badge)}</span>` : ""}
+                </div>
+                <div class="item-price">R$ ${formatarPreco(item.preco)}</div>
+              </div>
+              <p class="desc">${textoSeguro(item.descricao || "")}</p>
             </div>
-            <div class="item-price">R$ ${formatarPreco(item.preco)}</div>
           </div>
-          <p class="desc">${textoSeguro(item.descricao || "")}</p>
           <div class="item-actions">
             <button class="item-btn editar" type="button" onclick="editarItem(${Number(item.id)})">✏️ Editar</button>
             <button class="item-btn remover" type="button" onclick="removerItem(${Number(item.id)})">🗑️ Remover</button>
@@ -362,12 +707,16 @@
       if (!item) return;
 
       editandoId = id;
-      document.getElementById("emoji").value = item.emoji || "";
+      emojiSelecionado = item.emoji || "🍱";
+      document.getElementById("emoji-selected").textContent = emojiSelecionado;
+      document.getElementById("emoji").value = "";
       document.getElementById("nome").value = item.nome || "";
       document.getElementById("descricao").value = item.descricao || "";
       document.getElementById("preco").value = item.preco || "0.00";
       document.getElementById("categoria").value = item.categoria || "tradicional";
       document.getElementById("badge").value = item.badge || "";
+      imagemBase64 = item.imagem || "";
+      atualizarPreviewImagem(imagemBase64);
       document.getElementById("titulo-form").textContent = "✏️ Editar Marmita";
       document.getElementById("btn-cancelar").style.display = "inline-block";
       document.getElementById("msg-sucesso").style.display = "none";
@@ -382,16 +731,13 @@
       if (editandoId === id) limparFormulario();
     }
 
-    function restaurarPadrao() {
-      if (!confirm("Isso irá substituir todas as marmitas pelos itens padrão. Deseja continuar?")) return;
-      salvarItens(itensPadrao);
-      renderizarLista();
-      limparFormulario();
-      mostrarMensagem("Cardápio padrão restaurado com sucesso! ✅");
-    }
-
     function limparFormulario() {
       editandoId = null;
+      emojiSelecionado = "🍗";
+      document.getElementById("emoji-selected").textContent = "🍗";
+      document.getElementById("emoji").value = "";
+      imagemBase64 = "";
+      atualizarPreviewImagem("");
       document.getElementById("form-marmita").reset();
       document.getElementById("categoria").value = "tradicional";
       document.getElementById("titulo-form").textContent = "➕ Adicionar Marmita";
@@ -410,12 +756,13 @@
       const itens = carregarItens();
       const novoItem = {
         id: editandoId || Date.now(),
-        emoji: document.getElementById("emoji").value || "🍱",
+        emoji: emojiSelecionado || "🍱",
         nome: document.getElementById("nome").value.trim(),
         descricao: document.getElementById("descricao").value.trim(),
         preco: document.getElementById("preco").value || "0.00",
         categoria: document.getElementById("categoria").value,
-        badge: document.getElementById("badge").value.trim()
+        badge: document.getElementById("badge").value.trim(),
+        imagem: imagemBase64
       };
 
       if (editandoId) {
@@ -431,7 +778,47 @@
       mostrarMensagem("Marmita salva com sucesso! ✅");
     });
 
-    document.addEventListener("DOMContentLoaded", renderizarLista);
+    function atualizarPreviewImagem(dataUrl) {
+      const box = document.getElementById("img-upload-area");
+      if (dataUrl) {
+        box.innerHTML = `<img src="${dataUrl}" alt="Pré-visualização" /><button type="button" class="btn-remover-img" onclick="event.stopPropagation(); removerImagem()">🗑️ Remover foto</button>`;
+      } else {
+        box.innerHTML = '<span class="placeholder-txt"><i>📷</i> Clique para enviar uma foto</span>';
+      }
+    }
+
+    function removerImagem() {
+      imagemBase64 = "";
+      document.getElementById("imagem-file").value = "";
+      atualizarPreviewImagem("");
+    }
+
+    document.getElementById("imagem-file").addEventListener("change", function () {
+      const file = this.files[0];
+      if (!file) return;
+      if (file.size > 2 * 1024 * 1024) {
+        alert("A imagem deve ter no máximo 2MB.");
+        this.value = "";
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        imagemBase64 = e.target.result;
+        atualizarPreviewImagem(imagemBase64);
+      };
+      reader.readAsDataURL(file);
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      initEmojiPicker();
+
+      // Escuta mudanças em tempo real no Firebase
+      cardapioRef.on("value", (snap) => {
+        const dados = snap.val();
+        itensCache = Array.isArray(dados) ? dados.filter(Boolean) : [];
+        renderizarLista();
+      });
+    });
   </script>
 </body>
 </html>
