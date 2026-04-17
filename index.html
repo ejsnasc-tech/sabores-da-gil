@@ -75,32 +75,41 @@
     .nav a:hover { color: var(--dourado-escuro); }
 
     .hero {
-      padding: 126px 0 62px;
+      padding: 80px 0 40px;
       background: linear-gradient(155deg, #f3e9bf 0%, #fefae0 47%, #fffdf3 100%);
-      text-align: center;
+    }
+    .hero .container {
+      margin-inline: 0;
+      padding-left: 4%;
+    }
+    .hero-top {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
     }
     .hero-logo {
       width: 100px;
-      height: 100px;
-      margin: 0 auto 16px;
-      display: block;
+      height: auto;
+      border-radius: 50%;
     }
-    .hero h2 {
+    .hero-top-text h2 {
       margin: 0;
       font-family: 'Playfair Display', serif;
       font-size: clamp(1.9rem, 4.8vw, 3rem);
       color: var(--marrom);
+      text-align: left;
     }
-    .hero p {
-      margin: 14px auto 0;
-      max-width: 650px;
+    .hero-top-text p {
+      margin: 8px 0 0;
       color: var(--marrom-claro);
       font-size: clamp(.96rem, 2.8vw, 1.08rem);
+      text-align: left;
     }
     .hero-actions {
       margin-top: 26px;
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;
       flex-wrap: wrap;
       gap: 12px;
     }
@@ -162,6 +171,9 @@
     }
 
     #cardapio { background: var(--creme-escuro); }
+    #cardapio .container {
+      margin-inline: auto;
+    }
     .filtros {
       display: flex;
       justify-content: center;
@@ -200,10 +212,58 @@
       gap: 14px;
       padding: 14px;
       position: relative;
-      transition: box-shadow .2s;
+      transition: box-shadow .2s, border-color .2s;
+      cursor: pointer;
     }
     .card-item:hover {
       box-shadow: 0 8px 24px rgba(62, 31, 0, .14);
+    }
+    .card-item.selecionado {
+      border-color: var(--dourado);
+      background: #fffdf0;
+      box-shadow: 0 4px 16px rgba(181, 166, 66, .2);
+    }
+    .card-check {
+      width: 22px;
+      height: 22px;
+      min-width: 22px;
+      border-radius: 50%;
+      border: 2px solid #d8caa5;
+      display: grid;
+      place-items: center;
+      transition: .2s;
+      font-size: .75rem;
+      color: transparent;
+    }
+    .card-item.selecionado .card-check {
+      background: var(--dourado);
+      border-color: var(--dourado);
+      color: var(--marrom);
+    }
+    .enviar-pedido {
+      position: fixed;
+      bottom: 80px;
+      right: 18px;
+      background: #25d366;
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 14px 24px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(37, 211, 102, .35);
+      z-index: 1200;
+      display: none;
+      align-items: center;
+      gap: 8px;
+      transition: .2s;
+    }
+    .enviar-pedido:hover {
+      background: #1fb855;
+    }
+    .enviar-pedido.visivel {
+      display: flex;
     }
     .card-img {
       width: 80px;
@@ -289,24 +349,29 @@
       white-space: nowrap;
     }
 
-    #sobre { background: var(--branco); }
+    #sobre { background: var(--branco); padding: 16px 0; }
+    #sobre .sobre-wrap {
+      margin-left: 20px !important;
+      margin-right: auto !important;
+      width: auto;
+    }
     .sobre-wrap {
-      display: grid;
-      gap: 20px;
+      display: flex;
+      gap: 12px;
       align-items: center;
-      grid-template-columns: 1fr;
+      max-width: 600px;
     }
     .sobre-blob {
-      background: radial-gradient(circle at 30% 20%, #cabd65 0%, var(--dourado) 62%, #a19340 100%);
-      color: var(--marrom);
-      min-height: 220px;
-      border-radius: 59% 41% 59% 41% / 47% 57% 43% 53%;
-      display: grid;
-      place-items: center;
-      font-size: 3rem;
-      box-shadow: inset 0 0 0 6px rgba(255,255,255,.18);
+      flex-shrink: 0;
     }
-    .sobre-txt p { margin-top: 0; color: var(--texto-claro); line-height: 1.7; }
+    .sobre-blob img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .sobre-txt p { margin-top: 0; color: var(--texto-claro); line-height: 1.5; font-size: .88rem; }
+    .sobre-txt .sec-title { font-size: 1.2rem; margin-bottom: 4px; }
     .stats {
       display: flex;
       flex-wrap: wrap;
@@ -323,26 +388,50 @@
       font-size: .9rem;
     }
 
-    #contato { background: var(--creme); }
+    #contato { background: var(--creme); padding: 16px 0; }
+    #contato .container {
+      margin-inline: auto;
+    }
+    .contato-sobre-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+    }
+    .sobre-inline {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .sobre-inline .sobre-blob { flex-shrink: 0; }
+    .sobre-inline .sobre-blob img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
     .contato-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
     }
     .contato-card {
       background: var(--branco);
       border: 1px solid #ebdfbe;
-      border-radius: 16px;
-      padding: 18px;
-      box-shadow: 0 6px 12px rgba(62,31,0,.06);
+      border-radius: 50px;
+      padding: 10px 14px;
+      box-shadow: 0 2px 6px rgba(62,31,0,.06);
+      text-align: center;
     }
     .contato-card i {
-      font-size: 1.3rem;
+      font-size: 1rem;
       color: var(--dourado-escuro);
-      margin-bottom: 10px;
+      margin-bottom: 4px;
     }
-    .contato-card h3 { margin: 4px 0; color: var(--marrom); }
-    .contato-card p { margin: 0; color: var(--texto-claro); word-break: break-word; }
+    .contato-card h3 { margin: 2px 0; color: var(--marrom); font-size: .85rem; }
+    .contato-card p { margin: 0; color: var(--texto-claro); word-break: break-word; font-size: .78rem; }
     .contato-card a { color: var(--marrom-claro); font-weight: 500; text-decoration: underline; text-underline-offset: 2px; }
 
     footer {
@@ -403,7 +492,7 @@
   <header class="header">
     <div class="container header-inner">
       <a class="brand" href="#inicio" aria-label="Sabores da Gil">
-        <img src="logo.svg" alt="Logo Sabores da Gil" />
+        <img src="logo.jpg" alt="Logo Sabores da Gil" />
         <h1>Sabores da Gil</h1>
       </a>
       <nav class="nav">
@@ -417,9 +506,13 @@
   <main id="inicio">
     <section class="hero">
       <div class="container">
-        <img src="logo.svg" alt="Logo Sabores da Gil" class="hero-logo" />
-        <h2>Sabor que alimenta a alma</h2>
-        <p>Comida caseira feita com carinho em Glória-SE. Marmitas fresquinhas para deixar seu dia mais leve e saboroso.</p>
+        <div class="hero-top">
+          <img src="logo.jpg" alt="Logo Sabores da Gil" class="hero-logo" />
+          <div class="hero-top-text">
+            <h2>Sabor que alimenta a alma</h2>
+            <p>Comida caseira feita com carinho em Glória-SE. Marmitas fresquinhas para deixar seu dia mais leve e saboroso.</p>
+          </div>
+        </div>
         <div class="hero-actions">
           <a class="btn btn-primary" href="#cardapio">Ver Cardápio</a>
           <a class="btn btn-outline" href="#contato">Entre em Contato</a>
@@ -427,14 +520,7 @@
       </div>
     </section>
 
-    <div class="destaques">
-      <div class="container destaques-grid">
-        <div class="destaque-item"><i class="fa-solid fa-seedling"></i> Ingredientes Frescos 🌿</div>
-        <div class="destaque-item"><i class="fa-solid fa-heart"></i> Feito com Amor ❤️</div>
-        <div class="destaque-item"><i class="fa-solid fa-truck-fast"></i> Entrega em Glória-SE 🚚</div>
-        <div class="destaque-item"><i class="fa-solid fa-sack-dollar"></i> Preço Justo 💰</div>
-      </div>
-    </div>
+    </section>
 
     <section id="cardapio">
       <div class="container">
@@ -447,32 +533,36 @@
           <button class="filtro-btn" onclick="filtrar('especial', this)">Especial</button>
         </div>
         <div class="grid-cardapio" id="grid-cardapio"></div>
+        <button class="enviar-pedido" id="btn-enviar-pedido" onclick="enviarPedidoWhatsApp()">
+          <i class="fa-brands fa-whatsapp"></i> Enviar Pedido
+        </button>
       </div>
     </section>
 
-    <section id="sobre">
-      <div class="container sobre-wrap">
-        <div class="sobre-blob" aria-hidden="true">🍱</div>
-        <div class="sobre-txt">
-          <h2 class="sec-title" style="text-align:left; margin-top:0;">Sobre a Sabores da Gil</h2>
-          <p>
-            A Sabores da Gil nasceu do amor por comida de verdade: aquela refeição caseira, temperada na medida certa e feita com cuidado.
-            Em Glória-SE, nosso compromisso é entregar sabor, qualidade e carinho em cada marmita.
-          </p>
-          <div class="stats">
-            <div class="stat">100% Caseiro</div>
-            <div class="stat">Ingredientes Frescos</div>
-            <div class="stat">Feito com Amor</div>
-          </div>
-        </div>
+    <div class="destaques">
+      <div class="container destaques-grid">
+        <div class="destaque-item"><i class="fa-solid fa-seedling"></i> Ingredientes Frescos 🌿</div>
+        <div class="destaque-item"><i class="fa-solid fa-heart"></i> Feito com Amor ❤️</div>
+        <div class="destaque-item"><i class="fa-solid fa-truck-fast"></i> Entrega em Glória-SE 🚚</div>
+        <div class="destaque-item"><i class="fa-solid fa-sack-dollar"></i> Preço Justo 💰</div>
       </div>
-    </section>
+    </div>
 
     <section id="contato">
       <div class="container">
         <h2 class="sec-title">Fale com a Gente</h2>
         <p class="sec-subtitle">Faça seu pedido e acompanhe novidades pelos nossos canais oficiais.</p>
-        <div class="contato-grid">
+        <div class="contato-sobre-wrap">
+          <div class="sobre-inline">
+            <div class="sobre-blob">
+              <img src="logo.jpg" alt="Logo Sabores da Gil" />
+            </div>
+            <div class="sobre-txt">
+              <h3 style="margin:0 0 4px; color:var(--marrom); font-family:'Playfair Display',serif; font-size:1.1rem;">Sobre a Sabores da Gil</h3>
+              <p style="margin:0; color:var(--texto-claro); font-size:.82rem; line-height:1.5;">A Sabores da Gil nasceu do amor por comida de verdade: aquela refeição caseira, temperada na medida certa e feita com cuidado. Em Glória-SE, nosso compromisso é entregar sabor, qualidade e carinho em cada marmita.</p>
+            </div>
+          </div>
+          <div class="contato-grid">
           <article class="contato-card">
             <i class="fa-brands fa-whatsapp"></i>
             <h3>WhatsApp</h3>
@@ -489,9 +579,9 @@
             <p>Glória-SE</p>
           </article>
         </div>
+        </div>
       </div>
     </section>
-  </main>
 
   <footer>
     <div class="container">
@@ -559,9 +649,13 @@
 
         const imagemSegura = textoSeguro(item.imagem || "");
         const temImagem = !!item.imagem;
+        const itemId = textoSeguro(String(item.id || ""));
+
+        const selecionado = pedido[itemId] ? 'selecionado' : '';
 
         return `
-          <div class="card-item">
+          <div class="card-item ${selecionado}" data-id="${itemId}" data-nome="${nomeSeguro}" data-preco="${precoNumero || 0}" onclick="toggleItem(this)">
+            <div class="card-check"><i class="fa-solid fa-check"></i></div>
             <div class="card-img">${temImagem ? `<img src="${imagemSegura}" alt="${nomeSeguro}" onerror="this.replaceWith(document.createTextNode('${emojiSeguro}'))" />` : emojiSeguro}${badgeSeguro ? `<span class="card-badge ${categoriaItem === "fit" ? "fit" : ""}">${badgeSeguro}</span>` : ""}</div>
             <div class="card-info">
               <h3>${nomeSeguro}</h3>
@@ -574,6 +668,55 @@
           </div>
         `;
       }).join("");
+    }
+
+    const pedido = {};
+
+    function toggleItem(el) {
+      const id = el.dataset.id;
+      if (pedido[id]) {
+        delete pedido[id];
+      } else {
+        pedido[id] = 1;
+      }
+      renderizarCardapio(filtroAtual);
+      atualizarBotaoEnviar();
+    }
+
+    function atualizarBotaoEnviar() {
+      const btn = document.getElementById('btn-enviar-pedido');
+      const totalItens = Object.keys(pedido).length;
+      if (totalItens > 0) {
+        btn.classList.add('visivel');
+        btn.innerHTML = `<i class="fa-brands fa-whatsapp"></i> Enviar Pedido (${totalItens})`;
+      } else {
+        btn.classList.remove('visivel');
+      }
+    }
+
+    function enviarPedidoWhatsApp() {
+      const itens = carregarItens();
+      let mensagem = '🍱 *Pedido - Sabores da Gil*\n\n';
+      let total = 0;
+
+      for (const [id, qtd] of Object.entries(pedido)) {
+        const item = itens.find(i => String(i.id) === id);
+        if (!item) continue;
+        const preco = Number.parseFloat(item.preco) || 0;
+        total += preco;
+        mensagem += `✅ ${item.nome} - R$ ${preco.toFixed(2).replace('.', ',')}\n`;
+      }
+
+      mensagem += `\n💰 *Total: R$ ${total.toFixed(2).replace('.', ',')}*`;
+
+
+      const url = 'https://wa.me/5579999105131?text=' + encodeURIComponent(mensagem);
+      window.open(url, '_blank');
+
+      // Limpar seleção
+      for (const key in pedido) delete pedido[key];
+      renderizarCardapio(filtroAtual);
+      atualizarBotaoEnviar();
     }
 
     function filtrar(categoria, btn) {
