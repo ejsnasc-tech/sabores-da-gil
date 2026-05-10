@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sabores da Gil | Painel Administrativo</title>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
-  <script src="firebase-config.js"></script>
   <style>
     :root {
       --dourado: #B5A642;
@@ -500,16 +497,11 @@
   </main>
 
   <script>
-    // ===== FIREBASE INIT =====
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-    const cardapioRef = db.ref("cardapio");
-    const senhaRef = db.ref("admin_senha");
-
     let editandoId = null;
     let emojiSelecionado = "🍗";
     let imagemBase64 = "";
     let itensCache = [];
+    let senhaAdmin = "";
 
     // ===== LOGIN =====
     document.getElementById("login-senha").addEventListener("keydown", (e) => {
@@ -518,27 +510,25 @@
 
     function verificarSenha() {
       const input = document.getElementById("login-senha").value;
-      senhaRef.once("value").then((snap) => {
-        const senhaSalva = snap.val();
-        if (!senhaSalva) {
-          // Primeira vez: define a senha digitada como a senha admin
-          senhaRef.set(input).then(() => {
+      if (!input) return;
+
+      fetch("/api/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ senha: input }),
+      })
+        .then((r) => r.json())
+        .then((data) => {
+          if (data.ok) {
+            senhaAdmin = input;
             document.getElementById("login-overlay").style.display = "none";
-          });
-        } else if (input === senhaSalva) {
-          document.getElementById("login-overlay").style.display = "none";
-        } else {
+          } else {
+            document.getElementById("login-erro").style.display = "block";
+          }
+        })
+        .catch(() => {
           document.getElementById("login-erro").style.display = "block";
-        }
-      }).catch(() => {
-        // Se falhar (regras), tenta senha local
-        const senhaLocal = localStorage.getItem("admin_senha_local") || "admin123";
-        if (input === senhaLocal) {
-          document.getElementById("login-overlay").style.display = "none";
-        } else {
-          document.getElementById("login-erro").style.display = "block";
-        }
-      });
+        });
     }
 
     const EMOJIS = {
@@ -710,7 +700,14 @@
     }
 
     function salvarItens(itens) {
-      cardapioRef.set(itens);
+      fetch("/api/cardapio", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Admin-Senha": senhaAdmin,
+        },
+        body: JSON.stringify(itens),
+      }).catch(() => alert("Erro ao salvar. Tente novamente."));
     }
 
     function formatarPreco(valor) {
@@ -862,12 +859,13 @@
     document.addEventListener("DOMContentLoaded", () => {
       initEmojiPicker();
 
-      // Escuta mudanças em tempo real no Firebase
-      cardapioRef.on("value", (snap) => {
-        const dados = snap.val();
-        itensCache = Array.isArray(dados) ? dados.filter(Boolean) : [];
-        renderizarLista();
-      });
+      fetch("/api/cardapio")
+        .then((r) => r.json())
+        .then((dados) => {
+          itensCache = Array.isArray(dados) ? dados.filter(Boolean) : [];
+          renderizarLista();
+        })
+        .catch(() => renderizarLista());
     });
   </script>
 </body>

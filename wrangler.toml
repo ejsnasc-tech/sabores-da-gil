@@ -1,0 +1,7 @@
+name = "sabores-da-gil"
+compatibility_date = "2025-01-01"
+pages_build_output_dir = "."
+
+[[kv_namespaces]]
+binding = "CARDAPIO_KV"
+id = "COLE_O_ID_DO_KV_AQUI"
