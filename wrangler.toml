@@ -4,4 +4,4 @@ pages_build_output_dir = "."
 
 [[kv_namespaces]]
 binding = "CARDAPIO_KV"
-id = "COLE_O_ID_DO_KV_AQUI"
+id = "3d408ab117d84c498511015ca0ff5fa5"
