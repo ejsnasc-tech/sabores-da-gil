@@ -687,7 +687,7 @@
 
 
       const url = 'https://wa.me/5579999105131?text=' + encodeURIComponent(mensagem);
-      window.open(url, '_blank');
+      window.location.href = url;
 
       // Limpar seleção
       for (const key in pedido) delete pedido[key];
