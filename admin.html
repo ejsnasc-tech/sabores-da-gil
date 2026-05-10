@@ -542,42 +542,92 @@
     }
 
     const EMOJIS = {
-      "Comidas": [
-        ["🍗","frango,chicken,coxa"],["🍖","carne,meat,costela"],["🥩","bife,steak,carne"],["🍔","hamburguer,burger"],
-        ["🌭","hotdog,cachorro quente"],["🍕","pizza"],["🌮","taco"],["🌯","burrito,wrap"],
-        ["🥘","panela,ensopado,cozido"],["🍲","sopa,caldo"],["🍛","curry,caril"],["🍜","ramen,noodle,macarrao"],
-        ["🍝","espaguete,massa,macarrao,pasta"],["🍣","sushi,japones"],["🍤","camarao,shrimp"],["🍚","arroz,rice"],
-        ["🍱","marmita,bento"],["🥗","salada,salad,fit,fitness"],["🥙","pita,wrap"],["🧆","falafel,bolinho"],
-        ["🥚","ovo,egg"],["🍳","frigideira,ovo frito"],["🥞","panqueca,pancake"],["🧇","waffle"],
-        ["🥓","bacon"],["🧀","queijo,cheese"],["🥪","sanduiche,sandwich"],["🫔","tamale"],
-        ["🥣","cereal,mingau"],["🫕","fondue"],["🥫","lata,enlatado"],["🧈","manteiga"]
+      "Marmitas e Pratos": [
+        ["🍱","marmita,bento,quentinha"],["🍗","frango,chicken,coxa,sobrecoxa"],["🍖","carne,meat,costela,osso"],
+        ["🥩","bife,steak,carne,contrafile"],["🥘","panela,ensopado,cozido,guisado"],["🍲","sopa,caldo,canjica"],
+        ["🍛","curry,caril,indiano"],["🍚","arroz,rice,branquinho"],["🫘","feijao,bean,lentilha"],
+        ["🍝","espaguete,massa,macarrao,pasta"],["🍜","ramen,noodle,macarrao,yakisoba"],["🍣","sushi,japones,temaki"],
+        ["🥗","salada,salad,fit,fitness,verde"],["🧆","falafel,bolinho,croquete"],["🥙","pita,wrap,recheado"],
+        ["🌯","burrito,wrap,tortilla"],["🌮","taco,mexicano"],["🍔","hamburguer,burger,lanche"],
+        ["🌭","hotdog,cachorro quente,salsicha"],["🍕","pizza,italiano"],["🥪","sanduiche,sandwich,misto"],
+        ["🍳","frigideira,ovo frito,estrelado"],["🥚","ovo,egg,cozido"],["🥓","bacon,defumado"],
+        ["🧀","queijo,cheese,mussarela"],["🥞","panqueca,pancake,crepe"],["🧇","waffle,belga"],
+        ["🫔","tamale,pamonha"],["🥣","cereal,mingau,aveia"],["🫕","fondue,panelinha"],
+        ["🥫","lata,enlatado,conserva"],["🧈","manteiga,gordura"]
       ],
-      "Frutas e Vegetais": [
-        ["🍎","maca,apple"],["🍐","pera"],["🍊","laranja,orange,tangerina"],["🍋","limao,lemon"],
-        ["🍌","banana"],["🍉","melancia,watermelon"],["🍇","uva,grape"],["🍓","morango,strawberry"],
-        ["🫐","blueberry,mirtilo"],["🍑","pessego,peach"],["🥭","manga,mango"],["🍍","abacaxi,pineapple"],
-        ["🥥","coco,coconut"],["🥝","kiwi"],["🍅","tomate,tomato"],["🥑","abacate,avocado"],
-        ["🥦","brocolis,broccoli"],["🥬","alface,folha"],["🥒","pepino,cucumber"],["🌽","milho,corn"],
-        ["🥕","cenoura,carrot"],["🧅","cebola,onion"],["🧄","alho,garlic"],["🫑","pimentao"],
-        ["🌶️","pimenta,pepper"],["🥔","batata,potato"],["🍠","batata doce"],["🫘","feijao,bean"]
+      "Frutos do Mar": [
+        ["🦐","camarao,shrimp,fruto do mar"],["🦞","lagosta,lobster"],["🦀","caranguejo,siri,crab"],
+        ["🦑","lula,squid,fruto do mar"],["🐙","polvo,octopus"],["🦪","ostra,marisco"],
+        ["🐟","peixe,fish,tilapia"],["🐠","peixe,tropical,colorido"],["🐡","baiacú,peixe"],
+        ["🐬","golfinho"],["🍣","sushi,sashimi,japones"],["🍤","camarao,empanado,frito"],
+        ["🍥","kamaboko,peixe,japones"],["🥫","atum,sardinha,lata"]
+      ],
+      "Churrasco e Grelhados": [
+        ["🔥","fogo,brasa,churrasco,grill"],["🥩","picanha,bife,contrafile,maminha"],["🍖","costela,espetinho,osso"],
+        ["🌽","milho,pamonha,brasa"],["🧅","cebola,grelhada,espeto"],["🫑","pimentao,espeto,colorido"],
+        ["🍗","frango,espeto,asinha"],["🥓","bacon,defumado,churrasco"],["🧄","alho,tempero"],
+        ["🌶️","pimenta,ardida,malagueta"],["🫙","molho,vinagrete,chimichurri"],["🍺","cerveja,gelada,churrasco"]
+      ],
+      "Fitness e Saudável": [
+        ["🥗","salada,fitness,light,fit"],["🥑","abacate,avocado,saudavel"],["🥦","brocolis,verde,saudavel"],
+        ["🌱","organico,natural,vegano"],["🌿","ervas,natural,tempero"],["💪","proteina,forte,musculacao"],
+        ["🫐","blueberry,antioxidante,mirtilo"],["🥝","kiwi,vitamina,frutas"],["🍇","uva,antioxidante,grape"],
+        ["🥕","cenoura,laranja,vitamina"],["🌾","integral,graos,fibra"],["🫘","proteina,feijao,lentilha"],
+        ["🥒","pepino,refrescante,light"],["🍓","morango,vermelho,vitamina"],["🧃","suco,natural,vitamina"],
+        ["🥛","leite,proteina,calcio"],["🍵","cha,detox,verde"]
+      ],
+      "Padaria e Café": [
+        ["🥐","croissant,padaria,frances"],["🥖","baguete,pao,frances"],["🍞","pao,caseiro,forma"],
+        ["🥨","pretzel,salgado"],["🧀","queijo,misto,padaria"],["🥯","bagel,pao"],
+        ["🧁","cupcake,bolo,mini"],["☕","cafe,coffee,expresso"],["🍵","cha,tea,caneca"],
+        ["🥛","leite,milk,cappuccino"],["🧋","bubble tea,tapioca"],["🍩","donut,rosquinha,glazed"],
+        ["🍪","biscoito,cookie,amanteigado"],["🥞","panqueca,tapioca,crepe"],["🧇","waffle,padaria"],
+        ["🍫","chocolate,achocolatado,cacau"]
+      ],
+      "Frutas": [
+        ["🍎","maca,apple,vermelha"],["🍐","pera,amarela"],["🍊","laranja,orange,tangerina"],
+        ["🍋","limao,lemon,azedo"],["🍌","banana,tropical"],["🍉","melancia,watermelon,verão"],
+        ["🍇","uva,grape,roxa"],["🍓","morango,strawberry,vermelho"],["🫐","blueberry,mirtilo,roxo"],
+        ["🍑","pessego,peach,damasco"],["🥭","manga,mango,tropical"],["🍍","abacaxi,pineapple,tropical"],
+        ["🥥","coco,coconut,leite"],["🥝","kiwi,verde,vitamina"],["🍅","tomate,tomato,vermelho"],
+        ["🍒","cereja,cherry,vermelha"],["🫒","azeitona,olive,verde"],["🍈","melão,melon"],
+        ["🍏","maca verde,apple,verde"]
+      ],
+      "Vegetais": [
+        ["🥑","abacate,avocado,verde"],["🥦","brocolis,broccoli,verde"],["🥬","alface,repolho,folha"],
+        ["🥒","pepino,cucumber,verde"],["🌽","milho,corn,amarelo"],["🥕","cenoura,carrot,laranja"],
+        ["🧅","cebola,onion,pungente"],["🧄","alho,garlic,tempero"],["🫑","pimentao,verde,vermelho"],
+        ["🌶️","pimenta,pepper,ardida"],["🥔","batata,potato,inglesa"],["🍠","batata doce,sweet potato"],
+        ["🫘","feijao,bean,vagem"],["🍄","cogumelo,mushroom,shitake"],["🥜","amendoim,peanut,castanha"],
+        ["🌰","castanha,chestnut,nozes"]
       ],
       "Bebidas": [
-        ["☕","cafe,coffee"],["🍵","cha,tea"],["🧃","suco,juice,caixinha"],["🥤","refrigerante,copo,soda"],
-        ["🧋","bubble tea"],["🥛","leite,milk"],["🍺","cerveja,beer"],["🍷","vinho,wine"],
-        ["🍹","drink,coquetel,cocktail"],["🧊","gelo,ice"],["💧","agua,water"],["🫗","servindo"]
+        ["☕","cafe,coffee,expresso"],["🍵","cha,tea,verde"],["🧃","suco,juice,caixinha,polpa"],
+        ["🥤","refrigerante,copo,soda,gelado"],["🧋","bubble tea,tapioca,bolinha"],["🥛","leite,milk,vitamina"],
+        ["🍺","cerveja,beer,gelada"],["🍻","brinde,cerveja,festa"],["🍷","vinho,wine,tinto"],
+        ["🥂","espumante,brinde,champagne"],["🍸","coquetel,cocktail,martini"],["🍹","drink,tropical,fruta"],
+        ["🧉","chimarrão,mate,gaúcho"],["💧","agua,water,mineral"],["🧊","gelo,ice,gelado"],
+        ["🫗","servindo,jarro,bebida"],["🍶","sake,japones"],["🧃","vitamina,smoothie,polpa"]
       ],
       "Doces e Sobremesas": [
-        ["🍰","bolo,torta,cake"],["🎂","aniversario,bolo"],["🧁","cupcake"],["🍮","pudim,flan"],
-        ["🍩","donut,rosquinha"],["🍪","biscoito,cookie"],["🍫","chocolate"],["🍬","bala,doce,candy"],
-        ["🍭","pirulito,lollipop"],["🍦","sorvete,icecream"],["🍨","sundae"],["🥧","torta,pie"],
-        ["🫙","pote,conserva"]
+        ["🍰","bolo,torta,cake,fatia"],["🎂","aniversario,bolo,parabens"],["🧁","cupcake,mini bolo"],
+        ["🍮","pudim,flan,calda"],["🍩","donut,rosquinha,glazed"],["🍪","biscoito,cookie,chocolate"],
+        ["🍫","chocolate,barra,cacau"],["🍬","bala,doce,candy,caramelo"],["🍭","pirulito,lollipop,colorido"],
+        ["🍦","sorvete,icecream,casquinha"],["🍨","sundae,sorvete,calda"],["🍧","raspadinha,granita,gelo"],
+        ["🥧","torta,pie,romeu e julieta"],["🍡","dango,japones,espeto"],["🍢","oden,japones"],
+        ["🍣","sushi,mochi,japones"],["🫙","pote,geleia,conserva"],["🍯","mel,honey,dourado"],
+        ["🧃","vitamina,mousse,creme"]
       ],
-      "Especiais": [
-        ["⭐","estrela,star,especial"],["🔥","fogo,fire,quente,popular"],["❤️","coracao,heart,amor"],
-        ["💛","amarelo,coracao"],["🏆","trofeu,trophy,melhor"],["👨‍🍳","chef,cozinheiro"],["👩‍🍳","chef,cozinheira"],
-        ["🍱","marmita,bento"],["🛵","entrega,delivery,moto"],["🚚","caminhao,entrega,truck"],
-        ["✨","brilho,novo,new"],["💪","forte,fitness,fit"],["🌿","natural,verde,leaf"],["🌱","saudavel,organico"],
-        ["💰","preco,money,dinheiro"],["🎉","festa,party,novo"],["👑","coroa,crown,premium"],["💎","diamante,premium"]
+      "Especiais e Promoções": [
+        ["⭐","estrela,star,especial,destaque"],["🔥","fogo,fire,quente,popular,hit"],["❤️","coracao,heart,amor,favorito"],
+        ["💛","amarelo,coracao,feliz"],["🏆","trofeu,trophy,melhor,campeao"],["✨","brilho,novo,new,lancamento"],
+        ["💎","diamante,premium,luxo"],["👑","coroa,crown,premium,vip"],["🎉","festa,party,novo,especial"],
+        ["💰","preco,money,dinheiro,oferta"],["🏷️","etiqueta,preco,desconto"],["🎁","presente,brinde,gratis"],
+        ["🆕","novo,new,lancamento"],["🔝","top,melhor,premium"],["💯","cem,perfeito,nota maxima"],
+        ["👨‍🍳","chef,cozinheiro,masculino"],["👩‍🍳","chef,cozinheira,feminino"],["🧑‍🍳","cozinheiro,chef,geral"],
+        ["🛵","entrega,delivery,moto,rapido"],["🚚","caminhao,entrega,truck,delivery"],
+        ["💪","forte,fitness,proteina,musculacao"],["🌿","natural,verde,organico,leaf"],
+        ["🌱","saudavel,organico,vegano,sustentavel"],["🫶","amor,carinho,cuidado,feito com amor"]
       ]
     };
 
